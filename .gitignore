@@ -1,0 +1,15 @@
+# NotebookLM auth - NEVER commit these (contains Google session cookies)
+~/.notebooklm/
+.notebooklm/
+storage_state.json
+browser_profile/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Logs
+logs/
+*.log
