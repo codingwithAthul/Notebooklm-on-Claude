@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.2.0] - 2026-04-05
+
+### Added
+- **Example scripts** — `examples/` directory with four live-tested scripts: list notebooks, create notebook with sources, ask questions with follow-ups, manage sources (add/rename/delete) (#5)
+- Updated README with example scripts section and project structure
+
 ## [1.1.0] - 2026-04-05
 
 ### Added

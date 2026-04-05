@@ -94,6 +94,26 @@ notebooklm --profile work notebooks list
 notebooklm --profile personal notebooks list
 ```
 
+## Example Scripts
+
+The `examples/` directory contains ready-to-run scripts demonstrating common NotebookLM operations:
+
+```bash
+# List all your notebooks
+python3 examples/list_notebooks.py
+
+# Create a notebook with text and URL sources
+python3 examples/create_notebook.py
+
+# Ask questions to a notebook (uses most recent if no ID given)
+python3 examples/ask_notebook.py [notebook_id]
+
+# Add, rename, and delete sources
+python3 examples/manage_sources.py [notebook_id]
+```
+
+Each script uses the async `NotebookLMClient` and authenticates via the saved session from `notebooklm login`.
+
 ## Project Structure
 
 ```
@@ -102,6 +122,11 @@ Notebooklm-on-Claude/
 ├── requirements.txt        # Pinned dependency: notebooklm-py[browser]==0.3.4
 ├── pinned_version.txt      # Tracks current active version (read/written by agent)
 ├── run_agent.py            # Root-level entry point for launchd/cron
+├── examples/               # Example usage scripts
+│   ├── list_notebooks.py   # List all notebooks with details
+│   ├── create_notebook.py  # Create a notebook and add sources
+│   ├── ask_notebook.py     # Query a notebook with follow-ups
+│   └── manage_sources.py   # Add, rename, and delete sources
 └── version_agent/          # Version management package
     ├── __init__.py         # Package metadata
     ├── __main__.py         # Orchestrates the full check-and-update flow
