@@ -4,6 +4,7 @@ import sys
 
 from .checker import check_for_api_blockers
 from .logger import log
+from .notifier import notify
 from .updater import rollback, update_package
 from .versions import get_current_pinned_version, get_installed_version, get_latest_version
 
@@ -49,20 +50,24 @@ def main():
     if is_blocked:
         log(f"UPDATE BLOCKED - API blocker detected: {reason}")
         log(f"Staying on version {current}. Manual review recommended.")
+        notify("NotebookLM Update Blocked", f"v{latest} blocked: {reason[:80]}")
         return
 
     log(f"No API blockers found. Updating to {latest}...")
     try:
         update_package(latest, current)
         log(f"Successfully updated to {latest}")
+        notify("NotebookLM Updated", f"v{current} → v{latest}")
     except RuntimeError as e:
         log(f"ERROR: {e}")
+        notify("NotebookLM Update Failed", f"v{latest} failed — rolling back")
         log(f"Auto-rolling back to {current}...")
         try:
             rollback()
             log(f"Successfully rolled back to {current}")
         except (FileNotFoundError, RuntimeError) as rb_err:
             log(f"ROLLBACK ALSO FAILED: {rb_err}")
+            notify("NotebookLM Rollback Failed", f"Manual intervention needed")
 
 
 if __name__ == "__main__":
