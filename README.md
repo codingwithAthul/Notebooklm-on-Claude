@@ -66,6 +66,34 @@ You should see output like:
 [2026-04-04 10:23:02] Already on latest version. No update needed.
 ```
 
+## Multiple Google Accounts (Profiles)
+
+`notebooklm-py` supports multiple profiles, so you can use separate Google accounts (personal, work, school) without conflicts.
+
+### Set up a profile
+
+```bash
+# Create and authenticate a named profile
+notebooklm login --profile work
+notebooklm login --profile personal
+```
+
+Each profile stores its own session cookies at `~/.notebooklm/profiles/<name>/storage_state.json`.
+
+### List authenticated profiles
+
+```bash
+python3 -m version_agent --profiles
+```
+
+### Use a specific profile
+
+```bash
+# Run notebooklm commands with a specific profile
+notebooklm --profile work notebooks list
+notebooklm --profile personal notebooks list
+```
+
 ## Project Structure
 
 ```
@@ -81,7 +109,9 @@ Notebooklm-on-Claude/
     ├── logger.py           # Timestamped logging to file and stdout
     ├── versions.py         # Detects pinned, installed, and latest versions
     ├── checker.py          # Scans GitHub for API blockers before updating
-    └── updater.py          # Performs safe pip install and updates tracking files
+    ├── updater.py          # Safe version upgrades with rollback support
+    ├── notifier.py         # macOS desktop notifications for update events
+    └── profiles.py         # Profile listing and validation
 ```
 
 ## How the Version Agent Works
@@ -99,20 +129,28 @@ The version agent runs a safety-first update flow:
    c. Scan both for API blocker keywords:
       "blocked", "auth broken", "403", "breaking change",
       "google block", "captcha", "endpoint changed", etc.
-   d. If blockers found → SKIP update, log the reason
-   e. If clean → install new version, update pinned_version.txt
-      and requirements.txt
+   d. If blockers found → SKIP update, log the reason, send macOS notification
+   e. If clean → install new version, run smoke test (import check)
+   f. If smoke test fails → auto-rollback to previous version
+   g. If smoke test passes → update pinned_version.txt and requirements.txt
 6. Log everything to logs/version_agent.log
+7. Send macOS desktop notification on success, failure, or block
 ```
 
 You can run it manually at any time:
 
 ```bash
-# From the project root
+# Check for updates
 python3 run_agent.py
 
 # Or as a Python module
 python3 -m version_agent
+
+# Roll back to the previous version
+python3 -m version_agent --rollback
+
+# List authenticated Google profiles
+python3 -m version_agent --profiles
 ```
 
 ## Setting Up the Weekly Scheduler (macOS launchd)
