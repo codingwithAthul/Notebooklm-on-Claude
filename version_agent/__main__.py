@@ -5,6 +5,7 @@ import sys
 from .checker import check_for_api_blockers
 from .logger import log
 from .notifier import notify
+from .profiles import list_profiles
 from .updater import rollback, update_package
 from .versions import get_current_pinned_version, get_installed_version, get_latest_version
 
@@ -21,7 +22,24 @@ def handle_rollback():
         log(f"ROLLBACK ERROR: {e}")
 
 
+def handle_profiles():
+    """Handle the --profiles command."""
+    profiles = list_profiles()
+    if not profiles:
+        print("No authenticated profiles found.")
+        print("Run 'notebooklm login --profile <name>' to create one.")
+        return
+    print(f"Authenticated profiles ({len(profiles)}):")
+    for name in profiles:
+        print(f"  - {name}")
+
+
 def main():
+    # Handle --profiles flag
+    if "--profiles" in sys.argv:
+        handle_profiles()
+        return
+
     # Handle --rollback flag
     if "--rollback" in sys.argv:
         handle_rollback()
