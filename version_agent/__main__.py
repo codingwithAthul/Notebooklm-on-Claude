@@ -1,12 +1,31 @@
 """Entry point for the version agent — run with: python -m version_agent"""
 
+import sys
+
 from .checker import check_for_api_blockers
 from .logger import log
-from .updater import update_package
+from .updater import rollback, update_package
 from .versions import get_current_pinned_version, get_installed_version, get_latest_version
 
 
+def handle_rollback():
+    """Handle the --rollback command."""
+    log("=== Rollback Requested ===")
+    try:
+        previous = rollback()
+        log(f"Successfully rolled back to {previous}")
+    except FileNotFoundError as e:
+        log(f"ROLLBACK FAILED: {e}")
+    except RuntimeError as e:
+        log(f"ROLLBACK ERROR: {e}")
+
+
 def main():
+    # Handle --rollback flag
+    if "--rollback" in sys.argv:
+        handle_rollback()
+        return
+
     log("=== Version Agent Check Started ===")
 
     current = get_current_pinned_version()
@@ -34,10 +53,16 @@ def main():
 
     log(f"No API blockers found. Updating to {latest}...")
     try:
-        update_package(latest)
+        update_package(latest, current)
         log(f"Successfully updated to {latest}")
     except RuntimeError as e:
-        log(f"ERROR: Update failed - {e}")
+        log(f"ERROR: {e}")
+        log(f"Auto-rolling back to {current}...")
+        try:
+            rollback()
+            log(f"Successfully rolled back to {current}")
+        except (FileNotFoundError, RuntimeError) as rb_err:
+            log(f"ROLLBACK ALSO FAILED: {rb_err}")
 
 
 if __name__ == "__main__":

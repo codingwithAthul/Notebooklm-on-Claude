@@ -7,6 +7,7 @@ GITHUB_REPO = "teng-lin/notebooklm-py"
 
 WORKSPACE = Path(__file__).resolve().parent.parent
 PINNED_VERSION_FILE = WORKSPACE / "pinned_version.txt"
+PREVIOUS_VERSION_FILE = WORKSPACE / "previous_version.txt"
 REQUIREMENTS_FILE = WORKSPACE / "requirements.txt"
 LOG_DIR = WORKSPACE / "logs"
 

@@ -10,6 +10,9 @@ __pycache__/
 .venv/
 venv/
 
+# Runtime state
+previous_version.txt
+
 # Logs
 logs/
 *.log
