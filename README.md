@@ -24,8 +24,8 @@ A workspace for integrating [Google NotebookLM](https://notebooklm.google.com/) 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/codingwithAthul/notebooklm-workspace.git
-cd notebooklm-workspace
+git clone https://github.com/codingwithAthul/Notebooklm-on-Claude.git
+cd Notebooklm-on-Claude
 ```
 
 ### 2. Install dependencies
@@ -69,7 +69,7 @@ You should see output like:
 ## Project Structure
 
 ```
-notebooklm-workspace/
+Notebooklm-on-Claude/
 ├── .gitignore              # Excludes auth cookies, logs, Python cache
 ├── requirements.txt        # Pinned dependency: notebooklm-py[browser]==0.3.4
 ├── pinned_version.txt      # Tracks current active version (read/written by agent)
@@ -139,7 +139,7 @@ Create the file `~/Library/LaunchAgents/com.notebooklm.versionagent.plist`:
     <key>ProgramArguments</key>
     <array>
         <string>/path/to/your/python3</string>
-        <string>/path/to/notebooklm-workspace/run_agent.py</string>
+        <string>/path/to/Notebooklm-on-Claude/run_agent.py</string>
     </array>
 
     <!-- Run every Saturday at 10:23 AM -->
@@ -154,14 +154,14 @@ Create the file `~/Library/LaunchAgents/com.notebooklm.versionagent.plist`:
     </dict>
 
     <key>StandardOutPath</key>
-    <string>/path/to/notebooklm-workspace/logs/launchd_stdout.log</string>
+    <string>/path/to/Notebooklm-on-Claude/logs/launchd_stdout.log</string>
     <key>StandardErrorPath</key>
-    <string>/path/to/notebooklm-workspace/logs/launchd_stderr.log</string>
+    <string>/path/to/Notebooklm-on-Claude/logs/launchd_stderr.log</string>
 </dict>
 </plist>
 ```
 
-Replace `/path/to/your/python3` and `/path/to/notebooklm-workspace/` with your actual paths.
+Replace `/path/to/your/python3` and `/path/to/Notebooklm-on-Claude/` with your actual paths.
 
 To find your Python path: `which python3`
 
@@ -195,7 +195,7 @@ launchctl load ~/Library/LaunchAgents/com.notebooklm.versionagent.plist
 ```bash
 crontab -e
 # Add:
-23 10 * * 6 /usr/bin/python3 /path/to/notebooklm-workspace/run_agent.py >> /path/to/notebooklm-workspace/logs/cron.log 2>&1
+23 10 * * 6 /usr/bin/python3 /path/to/Notebooklm-on-Claude/run_agent.py >> /path/to/Notebooklm-on-Claude/logs/cron.log 2>&1
 ```
 
 **Windows (Task Scheduler):**
