@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1.0] - 2026-04-05
+
+### Added
+- **Rollback support** — saves current version to `previous_version.txt` before updating; auto-rolls back if smoke test (import check) fails after install; manual rollback via `python3 -m version_agent --rollback` (#9)
+- **macOS desktop notifications** — sends native notifications on update blocked, update success, update failure, and rollback failure via `osascript` (#8)
+- **Multi-profile support** — `profiles.py` module to list and validate authenticated Google profiles; `--profiles` CLI flag; README guide for setting up multiple accounts (#6)
+- Updated README with new CLI commands, project structure, and version agent workflow reflecting smoke test and notifications
+
 ## [1.0.0] - 2026-04-04
 
 ### Added
